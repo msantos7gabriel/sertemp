@@ -1,10 +1,11 @@
+#include <ArduinoJson.h>
 #include <WiFi.h>
 #include <Firebase_ESP_Client.h>
 
-#define WIFI_SSID "Prosperidade"
-#define WIFI_PASSWORD "agente12"
-#define FIREBASE_HOST "tempo-beijaflor-default-rtdb.firebaseio.com" // SEM https://
-#define FIREBASE_API_KEY "AIzaSyCjcZwMu1ZTrBKuGbqNEWGl029r-RHKEQc" // Mesmo que esteja correta!
+#define WIFI_SSID "Vitor Repetidor"
+#define WIFI_PASSWORD "cimentos"
+#define FIREBASE_HOST "sertemp-651ae-default-rtdb.firebaseio.com/" // SEM https://
+#define FIREBASE_API_KEY "qDYRYPNLHMMqwCxIq4TDVuzf87OoReOttA8t43XT" // Mesmo que esteja correta!
 
 FirebaseData fbdo;
 FirebaseConfig config;
@@ -22,7 +23,7 @@ void setup() {
   Serial.println("\nConectado! IP: " + WiFi.localIP().toString());
 
   // 2. Configuração FIREBASE SEM autenticação
-  config.database_url = "http://" + String(FIREBASE_HOST);
+  config.database_url = "https://" + String(FIREBASE_HOST);
   config.api_key = FIREBASE_API_KEY;
 
   // 3. Força conexão sem callbacks
