@@ -1,42 +1,109 @@
-#include <ArduinoJson.h>
 #include <WiFi.h>
 #include <Firebase_ESP_Client.h>
+#include <DHT.h>
+// #include <Adafruit_BMP085.h>
 
-#define WIFI_SSID "Vitor Repetidor"
+// Adafruit_BMP085 bmp;
+DHT dht(2, DHT11);
+
+#define WIFI_SSID "Vitor Repetidor "
 #define WIFI_PASSWORD "cimentos"
-#define FIREBASE_HOST "sertemp-651ae-default-rtdb.firebaseio.com/" // SEM https://
-#define FIREBASE_API_KEY "qDYRYPNLHMMqwCxIq4TDVuzf87OoReOttA8t43XT" // Mesmo que esteja correta!
+
+#define FIREBASE_HOST "https://sertemp-651ae-default-rtdb.firebaseio.com/" 
+#define FIREBASE_API_KEY "AIzaSyAHZos40wQIftXTDs-1_yFKNhCpnGtTwIA" 
+
+#define USER_EMAIL "admin@gmail.com"
+#define USER_PASS "admin1977"
 
 FirebaseData fbdo;
+
+FirebaseAuth auth;
 FirebaseConfig config;
+
+unsigned long sendDataPrevMillis = 0;
 
 void setup() {
   Serial.begin(115200);
-  
-  // 1. Conexão WiFi sem firulas
+
+  // if (!bmp.begin()){
+  //   Serial.println("Could not find BMP180. Check wiring!");
+  //   delay(100);
+  // }
+
+  dht.begin();
+
   WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
   Serial.println("Conectando WiFi...");
+
   while (WiFi.status() != WL_CONNECTED) {
+    Serial.print("Status: ");
+    Serial.println(WiFi.status());
+    Serial.print("Target: ");
+    Serial.println(WL_CONNECTED);
     delay(500);
-    Serial.print(".");
   }
   Serial.println("\nConectado! IP: " + WiFi.localIP().toString());
 
-  // 2. Configuração FIREBASE SEM autenticação
   config.database_url = "https://" + String(FIREBASE_HOST);
   config.api_key = FIREBASE_API_KEY;
 
-  // 3. Força conexão sem callbacks
-  Firebase.begin(&config, nullptr);
-  delay(2000); // Delay crítico!
+  auth.user.email = USER_EMAIL;
+  auth.user.password = USER_PASS;
 
-  // 4. Teste BRUTO de escrita
-  if (Firebase.RTDB.setInt(&fbdo, "/teste_conexao", 123)) {
-    Serial.println("✅ Escrita no Firebase OK!");
-  } else {
-    Serial.println("❌ FALHA GRAVE: " + fbdo.errorReason());
-    Serial.println("Código de erro: " + String(fbdo.httpCode()));
-  }
+  config.database_url = FIREBASE_HOST;
+
+  Firebase.reconnectNetwork(true);
+
+  Firebase.begin(&config, &auth);
+
+  Firebase.setDoubleDigits(5);
+
+  config.timeout.serverResponse = 10 * 1000;
+
 }
 
-void loop() {}
+void loop() {
+  // Serial.print("Altitude: ");
+  // Serial.println(bmp.readAltitude());
+  // Serial.print("Pressão: ");
+  // Serial.println(bmp.readSealevelPressure());
+  if (Firebase.ready() && (millis() - sendDataPrevMillis > 1000 || sendDataPrevMillis == 0)) {
+    sendDataPrevMillis = millis();
+    // long int altitude = bmp.readAltitude();
+    // long int pressure = bmp.readSealevelPressure();
+    float temp = dht.readTemperature();
+    float humidity = dht.readHumidity();
+
+    // if (Firebase.RTDB.setInt(&fbdo, "ceraima/Altitude", altitude)){
+    //   Serial.print("ALtitude: ");
+    //   Serial.println(altitude);
+    // } else {
+    //   Serial.println(fbdo.errorReason().c_str());
+    // }
+
+    // if (Firebase.RTDB.setInt(&fbdo, "ceraima/SealevelPressure", pressure)){
+    //   Serial.print("Pressure: ");
+    //   Serial.println(pressure);
+    // } else {
+    //   Serial.println(fbdo.errorReason().c_str());
+    // }
+
+    if (Firebase.RTDB.setInt(&fbdo, "ceraima/Temperature", temp)){
+      Serial.print("Teperature: ");
+      Serial.println(temp);
+    } else {
+      Serial.println(fbdo.errorReason().c_str());
+    }
+
+    if (Firebase.RTDB.setInt(&fbdo, "ceraima/Humidity", humidity)){
+      Serial.print("Humidity: ");
+      Serial.println(humidity);
+    } else {
+      Serial.println(fbdo.errorReason().c_str());
+    }
+
+  } else {
+    Serial.println(".");
+  }
+  delay(1000);
+}

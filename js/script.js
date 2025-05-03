@@ -1,4 +1,3 @@
-// Adicione ao final do seu arquivo HTML ou em um arquivo JS separado
 document.addEventListener('DOMContentLoaded', function() {
     const boxes = document.querySelectorAll('.box');
     
@@ -18,3 +17,9 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 });
+
+document.getElementById("today").innerHTML = "Hoje - " + new Date().toLocaleDateString('pt-BR', {
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit'
+}).replace(/\//g, '/');
