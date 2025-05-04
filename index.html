@@ -15,25 +15,21 @@
         <div class="logo">
             <a href="index.html"><img src="imgs/logo.png" alt="logo"></a>
         </div>
-        <nav>
-            <ul>
-                <li><a href="#">Home</a></li>
-                <li><a href="#">About</a></li>
-                <li><a href="#">Services</a></li>
-                <li><a href="#">Contact</a></li>
-            </ul>
-        </nav>
     </header>
     <div class="content"> 
         <div class="container">
+            <div class="date-selector">
+                <label for="dateSelector">Selecione uma data: </label>
+                <input type="date" id="dateSelector">
+                <button onclick="displayDataForDate()">Mostrar Gráficos</button>
+            </div>
             <div class="date">
-                <p id="today">Terça feira, 15 de abril</p>
+                <p id="today"></p>
             </div>
             <div class="box">
                 <div class="local">
                     <p>Condições meteorologicas para&nbsp</p><p id="regiao">Ceraima</p>
                 </div>
-                <img id="weather-icon" src=" " alt="Condições atuais">
                 <div class="box-header">
                     <div class="temperature">
                         <span id="ceraima-temp"></span>
@@ -55,6 +51,9 @@
                         <span class="label">Altitude:</span>
                         <span id="ceraima-altitude"></span>
                     </div>
+                    <canvas id="ceraima-temperatureChart"></canvas>
+                    <hr style="width: 90%; margin: 0 auto; border: 1px solid #a1a1bf;">
+                    <canvas id="ceraima-humidityChart"></canvas>
                 </div>
             </div>
             <div class="box">
@@ -95,5 +94,6 @@
         </div>
     </footer>
     <script type="module" src="js/firebase.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </body>
 </html>
