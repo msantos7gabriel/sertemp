@@ -1,18 +1,20 @@
 #include <WiFi.h>
 #include <Firebase_ESP_Client.h>
 #include <DHT.h>
-#include <NTPClient.h>
-#include <WiFiUdp.h>
-#include <time.h>
+  #include <NTPClient.h>
+  #include <WiFiUdp.h>
+  #include <time.h>
+#include <Adafruit_BMP085.h>
 
-DHT dht(2, DHT11);
-
-#define WIFI_SSID "Vitor Repetidor "
-#define WIFI_PASSWORD "cimentos"
+#define WIFI_SSID "Stephany"
+#define WIFI_PASSWORD "stephany123"
 #define FIREBASE_HOST "https://sertemp-651ae-default-rtdb.firebaseio.com/" 
 #define FIREBASE_API_KEY "AIzaSyAHZos40wQIftXTDs-1_yFKNhCpnGtTwIA" 
 #define USER_EMAIL "admin@gmail.com"
 #define USER_PASS "admin1977"
+
+DHT dht(2, DHT11);
+Adafruit_BMP085 bmp;
 
 const char* ntpServer = "pool.ntp.org";
 const long gmtOffset_sec = -3 * 3600;
@@ -27,6 +29,7 @@ unsigned long sendDataPrevMillis = 0;
 void setup() {
   Serial.begin(115200);
   dht.begin();
+  bmp.begin();
 
   WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
   Serial.println("Conectando WiFi...");
@@ -55,6 +58,8 @@ void loop() {
     
     float temp = dht.readTemperature();
     float humidity = dht.readHumidity();
+    const int altitude = bmp.readAltitude();
+    const int pressure = bmp.readSealevelPressure();
     
     if (isnan(temp) || isnan(humidity)) {
       Serial.println("Falha na leitura do sensor DHT!");
@@ -95,7 +100,9 @@ void loop() {
     Firebase.RTDB.setFloat(&fbdo, "ceraima/Temperature", temp);
     Firebase.RTDB.setFloat(&fbdo, "ceraima/Humidity", humidity);
     Firebase.RTDB.setString(&fbdo, "ceraima/lastUpdate", dateTime);
-    
+    Firebase.RTDB.setString(&fbdo, "ceraima/Altitude", altitude);
+    Firebase.RTDB.setString(&fbdo, "ceraima/SealevelPressure", pressure);
+
     Serial.println("Temperatura: " + String(temp) + "°C");
     Serial.println("Umidade: " + String(humidity) + "%");
   }
