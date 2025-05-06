@@ -167,7 +167,7 @@ footer .social-links a:hover {
     margin: 15px;
     background-color: #fff;
     border-radius: 1rem;
-    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    background: linear-gradient(135deg, #f5f7fa 0%, #fff0da 100%);
     border-radius: 12px;
     padding: 20px;
     margin-bottom: 20px;
@@ -188,7 +188,7 @@ footer .social-links a:hover {
 
 #regiao {
     font-weight: bold;
-    color: #3a7bd5;
+    color: #f19900;
 }
 
 .box-header {
@@ -301,45 +301,51 @@ footer {
     padding: 15px;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    background: linear-gradient(135deg, #f5f7fa 0%, #fff0da 100%);
+    width: 90%;
+    justify-content: center;
 }
 
 .date-selector label {
     font-family: 'Montserrat', sans-serif;
-    font-weight: 600;
+    font-weight: 500;
     color: #333;
     min-width: 140px;
 }
 
 .date-selector input[type="date"] {
     padding: 8px 12px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
+    border: 2px solid #ffffff;
+    background-color: rgba(255, 255, 255, 0.5);
+    border-radius: 15px;
     font-family: 'Roboto', sans-serif;
     flex: 1;
-    max-width: 200px;
+    max-width: 160px;
     outline: none;
     transition: border-color 0.3s;
 }
 
 .date-selector input[type="date"]:focus {
-    border-color: #4d7cff;
+    border-color: #ffa500;
     box-shadow: 0 0 0 2px rgba(77, 124, 255, 0.2);
 }
 
 .date-selector button {
-    background-color: #4d7cff;
+    background-color: #ffa500;
     color: white;
     border: none;
     padding: 8px 16px;
-    border-radius: 4px;
+    border-radius: 15px;
     font-family: 'Roboto', sans-serif;
     font-weight: 500;
     cursor: pointer;
     transition: background-color 0.3s;
+    transition: 0.5s;
 }
 
 .date-selector button:hover {
-    background-color: #3a68e0;
+    background-color: #ffbd2c;
+    transform: scale(1.05);
 }
 
 .date-selector button:active {
