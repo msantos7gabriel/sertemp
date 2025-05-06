@@ -101,6 +101,8 @@ function createTemperatureChart(times, temperatures, humidities) {
             scales: {
                 y: {
                     beginAtZero: true,
+                    min: 10,
+                    suggestedMax: 45,  
                     title: {
                         display: true,
                         text: '(°C)'
@@ -133,6 +135,8 @@ function createTemperatureChart(times, temperatures, humidities) {
             scales: {
                 y: {
                     beginAtZero: true,
+                    min: 30,
+                    suggestedMax: 70,                                       
                     title: {
                         display: true,
                         text: '(%)'
@@ -177,6 +181,18 @@ function getHistoricalData(local, date) {
     });
 }
 
+// Function to get today's date in GMT-3 (regardless of server timezone)
+function getTodayInBrazilTimezone() {
+    const now = new Date();
+    // Create a date string that forces interpretation in GMT-3
+    // First get the UTC time in milliseconds
+    const utcMillis = now.getTime() + (now.getTimezoneOffset() * 60000);
+    // Then adjust to GMT-3 (subtract 3 hours in milliseconds)
+    const brazilTime = new Date(utcMillis - (3 * 60 * 60 * 1000));
+    console.log("Brazil time: ", brazilTime);
+    return brazilTime.toISOString().split('T')[0];
+}
+
 function displayDataForDate() {
     const dateSelector = document.getElementById('dateSelector');
     const selectedDate = dateSelector.value;
@@ -194,18 +210,21 @@ function displayDataForDate() {
 function updateDateDisplay(dateString) {
     const todayElement = document.getElementById('today');
     if (todayElement) {
+        // Parse the date and ensure it's displayed in Brazil's timezone format
         const [year, month, day] = dateString.split('-').map(num => parseInt(num, 10));
         
+        // Create date explicitly with year, month, day in local time
         const date = new Date(year, month - 1, day);
         
-        const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+        const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', timeZone: 'America/Sao_Paulo' };
         const formattedDate = date.toLocaleDateString('pt-BR', options);
         
         todayElement.textContent = formattedDate.charAt(0).toUpperCase() + formattedDate.slice(1);
     }
 }
 
-let today = new Date().toISOString().split('T')[0];
+// Replace the simple today definition with our timezone-aware function
+let today = getTodayInBrazilTimezone();
 
 window.addEventListener('DOMContentLoaded', () => {
     const dateSelector = document.getElementById('dateSelector');
