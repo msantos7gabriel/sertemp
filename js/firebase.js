@@ -84,6 +84,9 @@ function createTemperatureChart(times, temperatures, humidities, pressures) {
     if (window.humidityChartInstance) {
         window.humidityChartInstance.destroy();
     }
+    if (window.pressureChartInstance) {
+        window.pressureChartInstance.destroy();
+    }
             
     window.temperatureChartInstance = new Chart(ctemp, {
     type: 'line',
@@ -162,15 +165,14 @@ function createTemperatureChart(times, temperatures, humidities, pressures) {
                 label: 'Pressão (Pa)',
                 data: pressures,
                 borderWidth: 1,
+                borderColor: 'rgb(150, 90, 230)',
                 tension: 0.4
                 }]
             },
         options: {
             scales: {
                 y: {
-                    beginAtZero: true,
-                    min: 30,
-                    suggestedMax: 70,                                       
+                    beginAtZero: true,                                     
                     title: {
                         display: true,
                         text: '(Pa)'

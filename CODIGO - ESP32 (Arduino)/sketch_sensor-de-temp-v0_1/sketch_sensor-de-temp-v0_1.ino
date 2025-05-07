@@ -6,8 +6,8 @@
 #include <time.h>
 #include <Adafruit_BMP085.h>
 
-#define WIFI_SSID "M35"
-#define WIFI_PASSWORD "321senha"
+#define WIFI_SSID "Stephany"
+#define WIFI_PASSWORD "stephany123"
 #define FIREBASE_HOST "https://sertemp-651ae-default-rtdb.firebaseio.com/" 
 #define FIREBASE_API_KEY "AIzaSyAHZos40wQIftXTDs-1_yFKNhCpnGtTwIA" 
 #define USER_EMAIL "admin@gmail.com"
