@@ -75,7 +75,7 @@ function getData(){
     });
 }
 
-function createTemperatureChart(times, temperatures, humidities) {
+function createTemperatureChart(times, temperatures, humidities, pressures) {
     const ctemp = document.getElementById('ceraima-temperatureChart');
     
     if (window.temperatureChartInstance) {
@@ -83,6 +83,9 @@ function createTemperatureChart(times, temperatures, humidities) {
     }
     if (window.humidityChartInstance) {
         window.humidityChartInstance.destroy();
+    }
+    if (window.pressureChartInstance) {
+        window.pressureChartInstance.destroy();
     }
             
     window.temperatureChartInstance = new Chart(ctemp, {
@@ -152,6 +155,39 @@ function createTemperatureChart(times, temperatures, humidities) {
             responsive: true
         }
     });
+
+    const cpres = document.getElementById('ceraima-pressureChart');
+    window.humidityChartInstance = new Chart(cpres, {
+        type: 'line',
+        data: {
+            labels: times,
+            datasets: [{
+                label: 'Pressão (Pa)',
+                data: pressures,
+                borderWidth: 1,
+                borderColor: 'rgb(150, 90, 230)',
+                tension: 0.4
+                }]
+            },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true,                                     
+                    title: {
+                        display: true,
+                        text: '(Pa)'
+                    }
+                },
+                x: {
+                    title: {
+                        display: true,
+                        text: 'Horário'
+                    }
+                }
+            },
+            responsive: true
+        }
+    });
 }
 
 function getHistoricalData(local, date) {
@@ -162,6 +198,7 @@ function getHistoricalData(local, date) {
             const times = [];
             const temperatures = [];
             const humidities = [];
+            const pressures = [];
             
             snapshot.forEach((childSnapshot) => {
                 const timeKey = childSnapshot.key + ":00";
@@ -170,9 +207,10 @@ function getHistoricalData(local, date) {
                 times.push(timeKey);
                 temperatures.push(data.temperature);
                 humidities.push(data.humidity);
+                pressures.push(data.pressure);
             });
             
-            createTemperatureChart(times, temperatures, humidities);
+            createTemperatureChart(times, temperatures, humidities, pressures);
         } else {
             console.log("No historical data available for this date");
         }

@@ -212,8 +212,6 @@ footer .social-links a:hover {
   color: #333;
 }
 
-
-
 .expand-btn {
   cursor: pointer;
   padding: 8px;
@@ -243,7 +241,7 @@ footer .social-links a:hover {
 }
 
 .box.expanded .box-details {
-  max-height: 900px;
+  max-height: 1400px;
   margin-top: 15px;
   border-top: 1px solid #ddd;
   padding-top: 15px;

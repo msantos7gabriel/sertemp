@@ -50,11 +50,42 @@
             <div class="expand-btn">
               <i class="arrow down"></i>
             </div>
-          </div>
-          <div class="box-details">
-            <div class="detail-item">
-              <span class="label">Umidade:</span>
-              <span id="ceraima-humidity"></span>
+            <div class="box">
+              <div class="local">
+                <p>Condições meteorologicas para&nbsp</p>
+                <p id="regiao">Ceraima</p>
+              </div>
+              <div class="box-header">
+                <div class="temperature">
+                  <span id="ceraima-temp"></span>
+                </div>
+                <div class="expand-btn">
+                  <i class="arrow down"></i>
+                </div>
+              </div>
+              <div class="box-details">
+                <div class="detail-item">
+                  <span class="label">Umidade:</span>
+                  <span id="ceraima-humidity"></span>
+                </div>
+                <div class="detail-item">
+                  <span class="label">Pressão a nivel do mar:</span>
+                  <span id="ceraima-pressure"></span>
+                </div>
+                <div class="detail-item">
+                  <span class="label">Altitude:</span>
+                  <span id="ceraima-altitude"></span>
+                </div>
+                <canvas id="ceraima-temperatureChart"></canvas>
+                <hr
+                  style="width: 90%; margin: 0 auto; border: 1px solid #a1a1bf"
+                />
+                <canvas id="ceraima-humidityChart"></canvas>
+                <hr
+                  style="width: 90%; margin: 0 auto; border: 1px solid #a1a1bf"
+                />
+                <canvas id="ceraima-pressureChart"></canvas>
+              </div>
             </div>
             <div class="detail-item">
               <span class="label">Pressão a nivel do mar:</span>
