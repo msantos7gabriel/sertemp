@@ -1,9 +1,9 @@
 #include <WiFi.h>
 #include <Firebase_ESP_Client.h>
 #include <DHT.h>
-  #include <NTPClient.h>
-  #include <WiFiUdp.h>
-  #include <time.h>
+#include <NTPClient.h>
+#include <WiFiUdp.h>
+#include <time.h>
 #include <Adafruit_BMP085.h>
 
 #define WIFI_SSID "Stephany"
@@ -88,6 +88,7 @@ void loop() {
     json.set("temperature", temp);
     json.set("humidity", humidity);
     json.set("timestamp", dateTime);
+    json.set("pressure", pressure);
     
     String path = "ceraima/historico/" + String(dateOnly) + "/" + String(timeOnly);
     
