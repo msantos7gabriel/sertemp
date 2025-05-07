@@ -1,13 +1,13 @@
 #include <WiFi.h>
 #include <Firebase_ESP_Client.h>
 #include <DHT.h>
-  #include <NTPClient.h>
-  #include <WiFiUdp.h>
-  #include <time.h>
+#include <NTPClient.h>
+#include <WiFiUdp.h>
+#include <time.h>
 #include <Adafruit_BMP085.h>
 
-#define WIFI_SSID "Stephany"
-#define WIFI_PASSWORD "stephany123"
+#define WIFI_SSID "M35"
+#define WIFI_PASSWORD "321senha"
 #define FIREBASE_HOST "https://sertemp-651ae-default-rtdb.firebaseio.com/" 
 #define FIREBASE_API_KEY "AIzaSyAHZos40wQIftXTDs-1_yFKNhCpnGtTwIA" 
 #define USER_EMAIL "admin@gmail.com"
@@ -88,6 +88,7 @@ void loop() {
     json.set("temperature", temp);
     json.set("humidity", humidity);
     json.set("timestamp", dateTime);
+    json.set("pressure", pressure);
     
     String path = "ceraima/historico/" + String(dateOnly) + "/" + String(timeOnly);
     
