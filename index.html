@@ -18,13 +18,13 @@
     </header>
     <div class="content"> 
         <div class="container">
+            <div class="date">
+                <p id="today"></p>
+            </div>
             <div class="date-selector">
                 <label for="dateSelector">Selecione uma data: </label>
                 <input type="date" id="dateSelector">
                 <button onclick="displayDataForDate()">Mostrar Gráficos</button>
-            </div>
-            <div class="date">
-                <p id="today"></p>
             </div>
             <div class="box">
                 <div class="local">
@@ -94,6 +94,14 @@
             <a href="#"><i class="fab fa-twitter"></i></a>
             <a href="#"><i class="fab fa-instagram"></i></a>
         </div>
+        <!-- 
+            <nav class="social-links">
+                <h3>Devs</h3>
+                <a href="#"><p>Rian Cesar</p></a>
+                <a href="#"><p>Bruno Rodrigues</p></a>
+                <a href="#"><p>Gabriel Montalvão</p></a>
+            </nav>
+        -->
     </footer>
     <script type="module" src="js/firebase.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
