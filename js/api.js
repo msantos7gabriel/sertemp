@@ -32,4 +32,4 @@ async function getWeatherData(city) {
 }
 
 // Chama a função com a cidade desejada
-getWeatherData("Morrinhos");
+getWeatherData("Guanambi");
