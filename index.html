@@ -1,100 +1,152 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Sertemp</title>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles/style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css" integrity="sha512-1sCRPdkRXhBV2PBLUdRb4tMg1w2YPf37qatUFeS7zlBy7jJI8Lf4VHwWfZZfpXtYSLy85pkm9GaYVYMfw5BC1A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&family=Roboto:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles/style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css"
+      integrity="sha512-1sCRPdkRXhBV2PBLUdRb4tMg1w2YPf37qatUFeS7zlBy7jJI8Lf4VHwWfZZfpXtYSLy85pkm9GaYVYMfw5BC1A=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
     <script src="js/script.js" defer></script>
-</head>
-<body>
+  </head>
+  <body>
     <header>
-        <div class="logo">
-            <a href="index.html"><img src="imgs/logo.png" alt="logo"></a>
-        </div>
+      <div class="logo">
+        <a href="index.html"><img src="imgs/logo.png" alt="logo" /></a>
+      </div>
     </header>
-    <div class="content"> 
-        <div class="container">
-            <div class="date">
-                <p id="today"></p>
-            </div>
-            <div class="date-selector">
-                <label for="dateSelector">Selecione uma data: </label>
-                <input type="date" id="dateSelector">
-                <button onclick="displayDataForDate()">Mostrar Gráficos</button>
-            </div>
-            <div class="box">
-                <div class="local">
-                    <p>Condições meteorologicas para&nbsp</p><p id="regiao">Ceraima</p>
-                </div>
-                <div class="box-header">
-                    <div class="temperature">
-                        <span id="ceraima-temp"></span>
-                    </div>
-                    <div class="expand-btn">
-                        <i class="arrow down"></i>
-                    </div>
-                </div>
-                <div class="box-details">
-                    <div class="detail-item">
-                        <span class="label">Umidade:</span>
-                        <span id="ceraima-humidity"></span>
-                    </div>
-                    <div class="detail-item">
-                        <span class="label">Pressão a nivel do mar:</span>
-                        <span id="ceraima-pressure"></span>
-                    </div>
-                    <div class="detail-item">
-                        <span class="label">Altitude:</span>
-                        <span id="ceraima-altitude"></span>
-                    </div>
-                    <canvas id="ceraima-temperatureChart"></canvas>
-                    <hr style="width: 90%; margin: 0 auto; border: 1px solid #a1a1bf;">
-                    <canvas id="ceraima-humidityChart"></canvas>
-                    <hr style="width: 90%; margin: 0 auto; border: 1px solid #a1a1bf;">
-                    <canvas id="ceraima-pressureChart"></canvas>
-                </div>
-            </div>
-            <div class="box">
-                <div class="local">
-                    <p>Condições meteorologicas para&nbsp</p><p id="regiao">Morrinhos</p>
-                </div>
-                <img id="weather-icon" src=" " alt="Condições atuais">
-                <div class="box-header">
-                    <div class="temperature">
-                        <span id="temp">25°C</span>
-                    </div>
-                    <div class="expand-btn">
-                        <i class="arrow down"></i>
-                    </div>
-                </div>
-                <div class="box-details">
-                    <div class="detail-item">
-                        <span class="label">Umidade:</span>
-                        <span id="humidity">70%</span>
-                    </div>
-                    <div class="detail-item">
-                        <span class="label">Vento:</span>
-                        <span id="wind">10 km/h</span>
-                    </div>
-                    <div class="detail-item">
-                        <span class="label">Sensação:</span>
-                        <span id="feels-like">27°C</span>
-                    </div>
-                </div>
-            </div>
+    <div class="content">
+      <div class="container">
+        <div class="date">
+          <p id="today"></p>
         </div>
+        <div class="date-selector">
+          <label for="dateSelector">Selecione uma data: </label>
+          <input type="date" id="dateSelector" />
+          <button onclick="displayDataForDate()">Mostrar Gráficos</button>
+        </div>
+        <div class="box">
+          <div class="local">
+            <p>Condições meteorologicas para&nbsp</p>
+            <p id="regiao">Ceraima</p>
+          </div>
+          <div class="box-header">
+            <div class="temperature">
+              <span id="ceraima-temp"></span>
+            </div>
+            <div class="expand-btn">
+              <i class="arrow down"></i>
+            </div>
+            <div class="box">
+              <div class="local">
+                <p>Condições meteorologicas para&nbsp</p>
+                <p id="regiao">Ceraima</p>
+              </div>
+              <div class="box-header">
+                <div class="temperature">
+                  <span id="ceraima-temp"></span>
+                </div>
+                <div class="expand-btn">
+                  <i class="arrow down"></i>
+                </div>
+              </div>
+              <div class="box-details">
+                <div class="detail-item">
+                  <span class="label">Umidade:</span>
+                  <span id="ceraima-humidity"></span>
+                </div>
+                <div class="detail-item">
+                  <span class="label">Pressão a nivel do mar:</span>
+                  <span id="ceraima-pressure"></span>
+                </div>
+                <div class="detail-item">
+                  <span class="label">Altitude:</span>
+                  <span id="ceraima-altitude"></span>
+                </div>
+                <canvas id="ceraima-temperatureChart"></canvas>
+                <hr
+                  style="width: 90%; margin: 0 auto; border: 1px solid #a1a1bf"
+                />
+                <canvas id="ceraima-humidityChart"></canvas>
+                <hr
+                  style="width: 90%; margin: 0 auto; border: 1px solid #a1a1bf"
+                />
+                <canvas id="ceraima-pressureChart"></canvas>
+              </div>
+            </div>
+            <div class="detail-item">
+              <span class="label">Pressão a nivel do mar:</span>
+              <span id="ceraima-pressure"></span>
+            </div>
+            <div class="detail-item">
+              <span class="label">Altitude:</span>
+              <span id="ceraima-altitude"></span>
+            </div>
+            <canvas id="ceraima-temperatureChart"></canvas>
+            <hr style="width: 90%; margin: 0 auto; border: 1px solid #a1a1bf" />
+            <canvas id="ceraima-humidityChart"></canvas>
+          </div>
+        </div>
+        <div class="box">
+          <div class="local">
+            <p>Condições meteorologicas para&nbsp</p>
+            <p id="regiao">Morrinhos</p>
+          </div>
+          <div class="box-header">
+            <div class="temperature">
+              <span id="temp">25°C</span>
+              <div id="weather-info">
+                <img
+                  id="weather-icon"
+                  src=""
+                  alt="Condições atuais"
+                  style="vertical-align: middle"
+                />
+                <span id="description" style="font-weight: 400"></span>
+              </div>
+            </div>
+
+            <div class="expand-btn">
+              <i class="arrow down"></i>
+            </div>
+          </div>
+          <div class="box-details">
+            <div class="detail-item">
+              <span class="label">Umidade:</span>
+              <span id="humidity">70%</span>
+            </div>
+            <div class="detail-item">
+              <span class="label">Vento:</span>
+              <span id="wind">10 km/h</span>
+            </div>
+            <div class="detail-item">
+              <span class="label">Sensação:</span>
+              <span id="feels-like">27°C</span>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
     <footer>
-        <div class="social-links">
-            <a href="#"><i class="fab fa-facebook"></i></a>
-            <a href="#"><i class="fab fa-twitter"></i></a>
-            <a href="#"><i class="fab fa-instagram"></i></a>
-        </div>
-        <!-- 
+      <div class="social-links">
+        <a href="#"><i class="fab fa-facebook"></i></a>
+        <a href="#"><i class="fab fa-twitter"></i></a>
+        <a href="#"><i class="fab fa-instagram"></i></a>
+      </div>
+      <!-- 
             <nav class="social-links">
                 <h3>Devs</h3>
                 <a href="#"><p>Rian Cesar</p></a>
@@ -104,6 +156,7 @@
         -->
     </footer>
     <script type="module" src="js/firebase.js"></script>
+    <script src="js/api.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-</body>
+  </body>
 </html>
