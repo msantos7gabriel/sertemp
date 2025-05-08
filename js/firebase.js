@@ -50,7 +50,7 @@ function deleteOldData() {
     });
 }
 
-function getData(){
+function getData(local){
     const lastCleanup = localStorage.getItem('lastDataCleanup');
     const today = new Date().toISOString().split('T')[0];
     
@@ -59,14 +59,14 @@ function getData(){
         localStorage.setItem('lastDataCleanup', today);
     }
 
-    get(child(dbRef, 'ceraima')).then((snapshot) => {
+    get(child(dbRef, local)).then((snapshot) => {
         if (snapshot.exists()) {
-            const ceraima = snapshot.val();
-            console.log("Ceraima: ", ceraima);
-            document.getElementById("ceraima-pressure").innerText = ceraima.SealevelPressure + " Pa";
-            document.getElementById("ceraima-altitude").innerText = ceraima.Altitude + " m";
-            document.getElementById("ceraima-temp").innerText = ceraima.Temperature + " C°";
-            document.getElementById("ceraima-humidity").innerText = ceraima.Humidity + " %";
+            const localization = snapshot.val();
+            console.log(`${local}`, localization);
+            document.getElementById(`${local}-pressure`).innerText = localization.SealevelPressure + " Pa";
+            document.getElementById(`${local}-altitude`).innerText = localization.Altitude + " m";
+            document.getElementById(`${local}-temp`).innerText = localization.Temperature + " C°";
+            document.getElementById(`${local}-humidity`).innerText = localization.Humidity + " %";
         } else {
             console.log("No data available");
         }
@@ -75,8 +75,8 @@ function getData(){
     });
 }
 
-function createTemperatureChart(times, temperatures, humidities, pressures) {
-    const ctemp = document.getElementById('ceraima-temperatureChart');
+function createTemperatureChart(local, times, temperatures, humidities, pressures) {
+const ctemp = document.getElementById(`${local}-temperatureChart`);
     
     if (window.temperatureChartInstance) {
         window.temperatureChartInstance.destroy();
@@ -122,7 +122,7 @@ function createTemperatureChart(times, temperatures, humidities, pressures) {
         }
     });
 
-    const chum = document.getElementById('ceraima-humidityChart');
+    const chum = document.getElementById(`${local}-humidityChart`);
     window.humidityChartInstance = new Chart(chum, {
         type: 'line',
         data: {
@@ -156,7 +156,7 @@ function createTemperatureChart(times, temperatures, humidities, pressures) {
         }
     });
 
-    const cpres = document.getElementById('ceraima-pressureChart');
+    const cpres = document.getElementById(`${local}-pressureChart`);
     window.humidityChartInstance = new Chart(cpres, {
         type: 'line',
         data: {
@@ -210,7 +210,7 @@ function getHistoricalData(local, date) {
                 pressures.push(data.pressure);
             });
             
-            createTemperatureChart(times, temperatures, humidities, pressures);
+            createTemperatureChart(local, times, temperatures, humidities, pressures);
         } else {
             console.log("No historical data available for this date");
         }
@@ -231,14 +231,14 @@ function getTodayInBrazilTimezone() {
     return brazilTime.toISOString().split('T')[0];
 }
 
-function displayDataForDate() {
+function displayDataForDate(local) {
     const dateSelector = document.getElementById('dateSelector');
     const selectedDate = dateSelector.value;
     
     if (selectedDate) {
         updateDateDisplay(selectedDate);
         
-        getHistoricalData("ceraima", selectedDate);
+        getHistoricalData(local, selectedDate);
     } else {
         console.log("No date selected");
         alert("Por favor, selecione uma data");
@@ -274,7 +274,11 @@ window.addEventListener('DOMContentLoaded', () => {
     updateDateDisplay(today);
 });
 
-getHistoricalData("ceraima", today);
-getData();
+const locals = ["ceraima", "alvorada", "mutas", "ipanema"];
+
+for (const local of locals) {
+    getHistoricalData(local, today);
+    getData(local);
+}
 
 window.displayDataForDate = displayDataForDate;
