@@ -1,4 +1,5 @@
 const apiKey = "a9e2ff3f71b34d60bbc6694971bc3eaa";
+const locals = ["guanambi"];
 
 async function getWeatherData(city) {
   const apiWeatherURL = `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${apiKey}&lang=pt_br`;
@@ -6,30 +7,25 @@ async function getWeatherData(city) {
   try {
     const response = await fetch(apiWeatherURL);
     const data = await response.json();
+    const icon = `${city}-icon`;
+    const description = `${city}-description`;
+ 
+    const iconElement = document.getElementsByClassName(icon);
+    const descriptionElement = document.getElementsByClassName(description);
 
-    // Atualiza os elementos da cidade
-    document.querySelector("#temp").innerText = `${Math.round(
-      data.main.temp
-    )}°C`;
-    document.querySelector("#humidity").innerText = `${data.main.humidity}%`;
-    document.querySelector("#wind").innerText = `${data.wind.speed} km/h`;
-    document.querySelector("#feels-like").innerText = `${Math.round(
-      data.main.feels_like
-    )}°C`;
+    for (const element of iconElement) {
+      element.setAttribute("src", `http://openweathermap.org/img/wn/${data.weather[0].icon}.png`);
+    }
+    for (const element of descriptionElement) {
+      element.setAttribute("alt", data.weather[0].description);
+    }
 
-    const iconElement = document.querySelector("#weather-icon");
-    const descriptionElement = document.querySelector("#description");
-
-    iconElement.setAttribute(
-      "src",
-      `http://openweathermap.org/img/wn/${data.weather[0].icon}.png`
-    );
-
-    descriptionElement.innerText = data.weather[0].description;
   } catch (error) {
-    console.error("Erro ao obter dados da API:", error);
+    console.error("Erro ao obter dados da API:", error); 
   }
 }
 
-// Chama a função com a cidade desejada
-getWeatherData("Guanambi");
+for (const local of locals) {
+  getWeatherData(local);
+}
+
