@@ -16,7 +16,7 @@ const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 const dbRef = ref(db);
 
-function deleteOldData() {
+function deleteOldData(local) {
     console.log("Checking for old data to clean up...");
     
     const cutoffDate = new Date();
@@ -25,7 +25,7 @@ function deleteOldData() {
     const cutoffDateStr = cutoffDate.toISOString().split('T')[0];
     console.log(`Deleting data older than: ${cutoffDateStr}`);
     
-    const historicoRef = ref(db, 'ceraima/historico');
+    const historicoRef = ref(db, `${local}/historico`);
     
     get(historicoRef).then((snapshot) => {
         if (snapshot.exists()) {
@@ -35,7 +35,7 @@ function deleteOldData() {
                 if (dateKey < cutoffDateStr) {
                     console.log(`Deleting old data from: ${dateKey}`);
                     
-                    remove(ref(db, `ceraima/historico/${dateKey}`))
+                    remove(ref(db, `${local}/historico/${dateKey}`))
                         .then(() => {
                             console.log(`Successfully deleted data for ${dateKey}`);
                         })
@@ -55,7 +55,7 @@ function getData(local){
     const today = new Date().toISOString().split('T')[0];
     
     if (!lastCleanup || lastCleanup !== today) {
-        deleteOldData();
+        deleteOldData(local);
         localStorage.setItem('lastDataCleanup', today);
     }
 
@@ -76,118 +76,149 @@ function getData(local){
 }
 
 function createTemperatureChart(local, times, temperatures, humidities, pressures) {
-const ctemp = document.getElementById(`${local}-temperatureChart`);
+    // Store chart instances by location to prevent conflicts
+    if (!window.chartInstances) {
+        window.chartInstances = {};
+    }
     
-    if (window.temperatureChartInstance) {
-        window.temperatureChartInstance.destroy();
+    if (!window.chartInstances[local]) {
+        window.chartInstances[local] = {};
     }
-    if (window.humidityChartInstance) {
-        window.humidityChartInstance.destroy();
+    
+    // Destroy existing charts for this location if they exist
+    if (window.chartInstances[local].temperature) {
+        window.chartInstances[local].temperature.destroy();
     }
-    if (window.pressureChartInstance) {
-        window.pressureChartInstance.destroy();
+    
+    if (window.chartInstances[local].humidity) {
+        window.chartInstances[local].humidity.destroy();
     }
-            
-    window.temperatureChartInstance = new Chart(ctemp, {
-    type: 'line',
-    data: {
-        labels: times,
-        datasets: [{
-            label: 'Temperatura (°C)',
-            data: temperatures,
-            borderColor: 'rgb(218, 34, 34)',
-            borderWidth: 1,
-            tension: 0.4
-            }]
-        },
-        options: {
-            scales: {
-                y: {
-                    beginAtZero: true,
-                    min: 10,
-                    suggestedMax: 45,  
-                    title: {
-                        display: true,
-                        text: '(°C)'
-                    }
-                },
-                x: {
-                    title: {
-                        display: true,
-                        text: 'Horário'
-                    }
-                }
-            },
-            responsive: true
-        }
-    });
+    
+    if (window.chartInstances[local].pressure) {
+        window.chartInstances[local].pressure.destroy();
+    }
 
-    const chum = document.getElementById(`${local}-humidityChart`);
-    window.humidityChartInstance = new Chart(chum, {
-        type: 'line',
-        data: {
-            labels: times,
-            datasets: [{
-                label: 'Umidade (%)',
-                data: humidities,
-                borderWidth: 1,
-                tension: 0.4
+    // Create the temperature chart
+    const ctempElement = document.getElementById(`${local}-temperatureChart`);
+    if (ctempElement) {
+        window.chartInstances[local].temperature = new Chart(ctempElement, {
+            type: 'line',
+            data: {
+                labels: times,
+                datasets: [{
+                    label: 'Temperatura (°C)',
+                    data: temperatures,
+                    borderColor: 'rgb(218, 34, 34)',
+                    borderWidth: 1,
+                    tension: 0.4
                 }]
             },
-        options: {
-            scales: {
-                y: {
-                    beginAtZero: true,
-                    min: 30,
-                    suggestedMax: 70,                                       
-                    title: {
-                        display: true,
-                        text: '(%)'
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        min: 10,
+                        suggestedMax: 45,  
+                        title: {
+                            display: true,
+                            text: '(°C)'
+                        }
+                    },
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Horário'
+                        }
                     }
                 },
-                x: {
-                    title: {
-                        display: true,
-                        text: 'Horário'
-                    }
-                }
-            },
-            responsive: true
-        }
-    });
+                responsive: true
+            }
+        });
+    } else {
+        console.error(`Temperature chart element for ${local} not found`);
+    }
 
-    const cpres = document.getElementById(`${local}-pressureChart`);
-    window.humidityChartInstance = new Chart(cpres, {
-        type: 'line',
-        data: {
-            labels: times,
-            datasets: [{
-                label: 'Pressão (Pa)',
-                data: pressures,
-                borderWidth: 1,
-                borderColor: 'rgb(150, 90, 230)',
-                tension: 0.4
+    // Create the humidity chart
+    const chumElement = document.getElementById(`${local}-humidityChart`);
+    if (chumElement) {
+        window.chartInstances[local].humidity = new Chart(chumElement, {
+            type: 'line',
+            data: {
+                labels: times,
+                datasets: [{
+                    label: 'Umidade (%)',
+                    data: humidities,
+                    borderColor: 'rgb(65, 105, 225)',
+                    borderWidth: 1,
+                    tension: 0.4
                 }]
             },
-        options: {
-            scales: {
-                y: {
-                    beginAtZero: true,                                     
-                    title: {
-                        display: true,
-                        text: '(Pa)'
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        min: 30,
+                        suggestedMax: 70,                                       
+                        title: {
+                            display: true,
+                            text: '(%)'
+                        }
+                    },
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Horário'
+                        }
                     }
                 },
-                x: {
-                    title: {
-                        display: true,
-                        text: 'Horário'
-                    }
+                responsive: true
+            }
+        });
+    } else {
+        console.error(`Humidity chart element for ${local} not found`);
+    }
+
+    // Create the pressure chart (if pressures data exists)
+    if (pressures && pressures.length > 0) {
+        const cpresElement = document.getElementById(`${local}-pressureChart`);
+        if (cpresElement) {
+            window.chartInstances[local].pressure = new Chart(cpresElement, {
+                type: 'line',
+                data: {
+                    labels: times,
+                    datasets: [{
+                        label: 'Pressão (Pa)',
+                        data: pressures,
+                        borderWidth: 1,
+                        borderColor: 'rgb(150, 90, 230)',
+                        tension: 0.4
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: false,                                     
+                            title: {
+                                display: true,
+                                text: '(Pa)'
+                            }
+                        },
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Horário'
+                            }
+                        }
+                    },
+                    responsive: true
                 }
-            },
-            responsive: true
+            });
+        } else {
+            console.error(`Pressure chart element for ${local} not found`);
         }
-    });
+    } else {
+        console.log(`No pressure data available for ${local}`);
+    }
 }
 
 function getHistoricalData(local, date) {
@@ -231,14 +262,18 @@ function getTodayInBrazilTimezone() {
     return brazilTime.toISOString().split('T')[0];
 }
 
-function displayDataForDate(local) {
+function displayDataForDate() {
     const dateSelector = document.getElementById('dateSelector');
     const selectedDate = dateSelector.value;
     
     if (selectedDate) {
         updateDateDisplay(selectedDate);
         
-        getHistoricalData(local, selectedDate);
+        // Update charts for all locations
+        const locals = ["ceraima", "alvorada", "mutas", "ipanema"];
+        for (const local of locals) {
+            getHistoricalData(local, selectedDate);
+        }
     } else {
         console.log("No date selected");
         alert("Por favor, selecione uma data");
