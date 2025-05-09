@@ -309,7 +309,7 @@ window.addEventListener('DOMContentLoaded', () => {
     updateDateDisplay(today);
 });
 
-const locals = ["ceraima", "alvorada", "mutas", "ipanema"];
+const locals = ["ceraima", "mutas", "feijao"];
 
 for (const local of locals) {
     getHistoricalData(local, today);
