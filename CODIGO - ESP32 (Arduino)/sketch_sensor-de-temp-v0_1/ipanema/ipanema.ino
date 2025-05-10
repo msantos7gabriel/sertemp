@@ -6,14 +6,14 @@
 #include <time.h>
 #include <Adafruit_BMP085.h>
 
-#define WIFI_SSID "Stephany"
-#define WIFI_PASSWORD "stephany123"
+#define WIFI_SSID "REDEVIVO"
+#define WIFI_PASSWORD "19216801"
 #define FIREBASE_HOST "https://sertemp-651ae-default-rtdb.firebaseio.com/" 
 #define FIREBASE_API_KEY "AIzaSyAHZos40wQIftXTDs-1_yFKNhCpnGtTwIA" 
 #define USER_EMAIL "admin@gmail.com"
 #define USER_PASS "admin1977"
 
-DHT dht(2, DHT11);
+DHT dht(18, DHT22);
 Adafruit_BMP085 bmp;
 
 const char* ntpServer = "pool.ntp.org";
@@ -90,7 +90,7 @@ void loop() {
     json.set("timestamp", dateTime);
     json.set("pressure", pressure);
     
-    String path = "ceraima/historico/" + String(dateOnly) + "/" + String(timeOnly);
+    String path = "feijao/historico/" + String(dateOnly) + "/" + String(timeOnly);
     
     if (Firebase.RTDB.setJSON(&fbdo, path.c_str(), &json)) {
       Serial.println("Dados gravados com sucesso em: " + path);
@@ -98,11 +98,11 @@ void loop() {
       Serial.println("ERRO: " + fbdo.errorReason());
     }
     
-    Firebase.RTDB.setFloat(&fbdo, "ceraima/Temperature", temp);
-    Firebase.RTDB.setFloat(&fbdo, "ceraima/Humidity", humidity);
-    Firebase.RTDB.setString(&fbdo, "ceraima/lastUpdate", dateTime);
-    Firebase.RTDB.setString(&fbdo, "ceraima/Altitude", altitude);
-    Firebase.RTDB.setString(&fbdo, "ceraima/SealevelPressure", pressure);
+    Firebase.RTDB.setFloat(&fbdo, "feijao/Temperature", temp);
+    Firebase.RTDB.setFloat(&fbdo, "feijao/Humidity", humidity);
+    Firebase.RTDB.setString(&fbdo, "feijao/lastUpdate", dateTime);
+    Firebase.RTDB.setString(&fbdo, "feijao/Altitude", altitude);
+    Firebase.RTDB.setString(&fbdo, "feijao/SealevelPressure", pressure);
 
     Serial.println("Temperatura: " + String(temp) + "°C");
     Serial.println("Umidade: " + String(humidity) + "%");
